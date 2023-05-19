@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!--    CardView-->
+    <dimen name="heightTopCardView">100dp</dimen>
+    <dimen name="marginTopCardView">10dp</dimen>
+    <dimen name="cornerRadiusTopCardView">15dp</dimen>
+    <dimen name="elevationTopCardView">10dp</dimen>
+    <!--    Posters-->
+    <dimen name="marginLeftPoster">1dp</dimen>
+    <dimen name="marginRightPoster">1dp</dimen>
+    <!--    Disclaimer-->
+    <dimen name="textSizeDisclaimer">16sp</dimen>
+    <!--    RecyclerView-->
+    <dimen name="marginsRV">4dp</dimen>
+    <!--    AppBar_Details-->
+    <dimen name="heightAppBar">200dp</dimen>
+    <!--    CollapsingToolbar-->
+    <dimen name="minHeightCollapsingToolbar">60dp</dimen>
+    <!--    FAB-->
+    <dimen name="marginsFAB">16dp</dimen>
+    <!--    details_description-->
+    <dimen name="marginsDetaildesc">8dp</dimen>
+    <!--    search-->
+    <dimen name="marginsSearch">8dp</dimen>
+    <!--    favorites-->
+    <integer name="marginsFavorites">12</integer>
+    <dimen name="marginsFavorites">8</dimen>
+    <!--    itemAd-->
+    <dimen name="paddingsLayoutItemAd">15dp</dimen>
+    <dimen name="textSizeTitleItemAd">23sp</dimen>
+    <dimen name="textSizeContentItemAd">18sp</dimen>
+    <!--    itemPicture-->
+    <dimen name="heightLayoutItemPicture">150dp</dimen>
+    <dimen name="elevationLayoutItemPicture">5dp</dimen>
+    <dimen name="radiusLayoutItemPicture">10dp</dimen>
+    <dimen name="widthImageItemPicture">150dp</dimen>
+    <dimen name="paddingsTextItemPicture">8dp</dimen>
+    <!--    itemArt-->
+    <dimen name="heightLayoutItemArt">125dp</dimen>
+    <dimen name="widthLayoutItemArt">125dp</dimen>
+    <dimen name="elevationLayoutItemArt">5dp</dimen>
+    <dimen name="radiusLayoutItemArt">4dp</dimen>
+
+</resources>

@@ -1,3 +1,21 @@
 <resources>
     <string name="app_name">MiniDeviantArt</string>
+    <string name="menu_settings_title">настройки</string>
+    <string name="menu_home_title">главная</string>
+    <string name="menu_favorites_title">избранное</string>
+    <string name="menu_watch_later_title">посмотреть позже</string>
+    <string name="menu_selections_title">подборки</string>
+    <string name="page_title">поиск</string>
+    <string name="disclaimer">content is from deviantart.com</string>
+    <string name="textToExit">Double tap for exit</string>
+
+    <string name="menu_settings_title_text">Настройки</string>
+    <string name="radio_button_popular">Популярные</string>
+    <string name="radio_button_newest">Новые</string>
+    <string name="radio_button_dailydeviations">За день</string>
+    <string name="radio_group_header">Подборка на главном экране:</string>
+
+    <string name="permission_storage">Нет разрешения. Пожалуйста, предоставьте разрешение</string>
+    <string name="downloaded_to_gallery">"Сохранено в галерею"</string>
+    <string name="open">В галерею</string>
 </resources>
