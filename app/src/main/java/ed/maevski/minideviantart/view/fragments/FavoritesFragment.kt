@@ -63,7 +63,7 @@ class FavoritesFragment() : Fragment() {
         binding.favoritesRecycler.addItemDecoration(decorator)
         binding.favoritesRecycler.adapter = adapter
 
-        AnimationHelper.performFragmentCircularRevealAnimation(binding.favoritesFragmentRoot, requireActivity(), 1)
+        AnimationHelper.performFragmentCircularRevealAnimation(binding.favoritesFragmentRoot, requireActivity(), 2)
 
         requireActivity().onBackPressedDispatcher.addCallback(
             viewLifecycleOwner,

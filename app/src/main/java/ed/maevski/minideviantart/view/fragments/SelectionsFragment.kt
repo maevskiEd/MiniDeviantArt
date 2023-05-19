@@ -27,7 +27,7 @@ class SelectionsFragment : Fragment() {
         AnimationHelper.performFragmentCircularRevealAnimation(
             binding.selectionsFragmentRoot,
             requireActivity(),
-            1
+            4
         )
 
         requireActivity().onBackPressedDispatcher.addCallback(
