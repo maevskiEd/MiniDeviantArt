@@ -1,4 +1,4 @@
-package ed.maevski.minideviantart.data
+package ed.maevski.remote_module
 
 object ApiConstants {
     const val BASE_URL1 = "https://www.deviantart.com/"

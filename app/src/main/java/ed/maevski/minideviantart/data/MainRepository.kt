@@ -1,23 +1,23 @@
 package ed.maevski.minideviantart.data
 
 import ed.maevski.minideviantart.data.dao.ArtDao
-import ed.maevski.minideviantart.data.entity.DeviantPicture
+import ed.maevski.remote_module.entity.DeviantPicture
 import kotlinx.coroutines.flow.Flow
 
 class MainRepository(private val artDao: ArtDao) {
-    fun putToDb(films: List<DeviantPicture>) {
+    fun putToDb(films: List<ed.maevski.remote_module.entity.DeviantPicture>) {
         artDao.insertAll(films)
     }
 
-    fun getAllFromDB(): Flow<List<DeviantPicture>> {
+    fun getAllFromDB(): Flow<List<ed.maevski.remote_module.entity.DeviantPicture>> {
         return artDao.getCachedFilms()
     }
 
-    fun getCategoryFromDB(setting: String): Flow<List<DeviantPicture>> {
+    fun getCategoryFromDB(setting: String): Flow<List<ed.maevski.remote_module.entity.DeviantPicture>> {
         return artDao.getCachedFilmsWithCategory(setting)
     }
 
-    fun deleteFromDB(deviantPicture: DeviantPicture) {
+    fun deleteFromDB(deviantPicture: ed.maevski.remote_module.entity.DeviantPicture) {
         artDao.deleteArt(deviantPicture)
     }
 }

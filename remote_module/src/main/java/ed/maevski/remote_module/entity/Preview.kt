@@ -1,9 +1,8 @@
-package ed.maevski.minideviantart.data.entity
+package ed.maevski.remote_module.entity
 
 import com.google.gson.annotations.SerializedName
 
-data class Content(
-    @SerializedName("filesize") val filesize: Int,
+data class Preview(
     @SerializedName("height") val height: Int,
     @SerializedName("src") val src: String,
     @SerializedName("transparency") val transparency: Boolean,

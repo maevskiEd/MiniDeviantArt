@@ -1,8 +1,8 @@
-package ed.maevski.minideviantart.data
+package ed.maevski.remote_module
 
-import ed.maevski.minideviantart.data.entity.DeviantartResponse
-import ed.maevski.minideviantart.data.entity_token.TokenPlaceboResponse
-import ed.maevski.minideviantart.data.entity_token.TokenResponse
+import ed.maevski.remote_module.entity.DeviantartResponse
+import ed.maevski.remote_module.entity_token.TokenPlaceboResponse
+import ed.maevski.remote_module.entity_token.TokenResponse
 import retrofit2.Call
 import retrofit2.http.GET
 import retrofit2.http.Path
@@ -17,19 +17,19 @@ interface DeviantartApi {
         @Query("offset") offset: Int,
         @Query("limit") limit: Int,
 
-        ): Call<DeviantartResponse>
+        ): Call<ed.maevski.remote_module.entity.DeviantartResponse>
 
     @GET("oauth2/token")
     fun getToken(
         @Query("grant_type") grantType: String,
         @Query("client_id") clientId: String,
         @Query("client_secret") clientSecret: String,
-        ): Call<TokenResponse>
+        ): Call<ed.maevski.remote_module.entity_token.TokenResponse>
 
     @GET("/api/v1/oauth2/placebo")
     fun checkToken(
         @Query("access_token") tokenKey: String,
-        ): Call<TokenPlaceboResponse>
+        ): Call<ed.maevski.remote_module.entity_token.TokenPlaceboResponse>
 
     object ApiConst {
         const val BASE_URL = "https://www.deviantart.com/"

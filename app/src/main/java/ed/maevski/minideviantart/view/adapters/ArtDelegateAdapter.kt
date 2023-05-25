@@ -5,27 +5,26 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.hannesdorfmann.adapterdelegates4.AbsListItemAdapterDelegate
-import ed.maevski.minideviantart.data.entity.DeviantPicture
 import ed.maevski.minideviantart.databinding.ItemArtBinding
-import ed.maevski.minideviantart.domain.Item
+import ed.maevski.remote_module.Item
 import ed.maevski.minideviantart.view.rv_adapters.ArtRecyclerAdapter
 
 class ArtDelegateAdapter (private val clickListener: ArtRecyclerAdapter.OnItemClickListener) :
-    AbsListItemAdapterDelegate<DeviantPicture, Item, ArtDelegateAdapter.ViewHolder>() {
+    AbsListItemAdapterDelegate<ed.maevski.remote_module.entity.DeviantPicture, Item, ArtDelegateAdapter.ViewHolder>() {
     class ViewHolder(binding: ItemArtBinding) : RecyclerView.ViewHolder(binding.root) {
         val art = binding.art
         val item_container = binding.itemContainer
     }
 
     override fun isForViewType(item: Item, items: MutableList<Item>, position: Int): Boolean {
-        return item is DeviantPicture
+        return item is ed.maevski.remote_module.entity.DeviantPicture
     }
 
     override fun onCreateViewHolder(parent: ViewGroup): ViewHolder {
         return ViewHolder(ItemArtBinding.inflate(LayoutInflater.from(parent.context), parent, false))
     }
 
-    override fun onBindViewHolder(item: DeviantPicture, holder: ViewHolder, payloads: MutableList<Any>) {
+    override fun onBindViewHolder(item: ed.maevski.remote_module.entity.DeviantPicture, holder: ViewHolder, payloads: MutableList<Any>) {
 //        holder.picture.setImageResource(item.picture)
 
         //Указываем контейнер, в котором будет "жить" наша картинка

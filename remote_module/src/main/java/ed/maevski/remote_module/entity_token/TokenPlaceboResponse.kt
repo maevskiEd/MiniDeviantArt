@@ -1,4 +1,4 @@
-package ed.maevski.minideviantart.data.entity_token
+package ed.maevski.remote_module.entity_token
 
 data class TokenPlaceboResponse (
         val error: String,

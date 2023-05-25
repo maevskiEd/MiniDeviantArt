@@ -1,4 +1,4 @@
-package ed.maevski.minideviantart.domain
+package ed.maevski.remote_module
 
 
 interface Item {

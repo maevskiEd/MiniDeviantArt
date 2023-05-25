@@ -1,11 +1,12 @@
-package ed.maevski.minideviantart.data.entity
+package ed.maevski.remote_module.entity
 
+import android.content.ClipData
 import android.os.Parcelable
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.Index
 import androidx.room.PrimaryKey
-import ed.maevski.minideviantart.domain.Item
+import ed.maevski.remote_module.Item
 import kotlinx.parcelize.Parcelize
 
 @Parcelize

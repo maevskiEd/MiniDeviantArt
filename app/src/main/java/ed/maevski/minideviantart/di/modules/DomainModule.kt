@@ -3,7 +3,7 @@ package ed.maevski.minideviantart.di.modules
 import android.content.Context
 import dagger.Module
 import dagger.Provides
-import ed.maevski.minideviantart.data.DeviantartApi
+import ed.maevski.remote_module.DeviantartApi
 import ed.maevski.minideviantart.data.MainRepository
 import ed.maevski.minideviantart.data.PreferenceProvider
 import ed.maevski.minideviantart.domain.Interactor

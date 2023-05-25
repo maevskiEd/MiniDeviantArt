@@ -1,4 +1,4 @@
-package ed.maevski.minideviantart.data.entity
+package ed.maevski.remote_module.entity
 
 import com.google.gson.annotations.SerializedName
 

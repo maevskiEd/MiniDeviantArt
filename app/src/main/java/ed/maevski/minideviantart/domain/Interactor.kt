@@ -1,10 +1,7 @@
 package ed.maevski.minideviantart.domain
 
 import ed.maevski.minideviantart.data.*
-import ed.maevski.minideviantart.data.entity.DeviantPicture
-import ed.maevski.minideviantart.data.entity.DeviantartResponse
-import ed.maevski.minideviantart.data.entity_token.TokenPlaceboResponse
-import ed.maevski.minideviantart.data.entity_token.TokenResponse
+import ed.maevski.remote_module.DeviantartApi
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.*
@@ -26,15 +23,15 @@ class Interactor(
     //и страницу, которую нужно загрузить (это для пагинации)
     fun getDeviantArtsFromApi(page: Int) {
         val accessToken = preferences.getToken()
-        var list: List<DeviantPicture>? = null
+        var list: List<ed.maevski.remote_module.entity.DeviantPicture>? = null
 
         println("getDeviantArtsFromApi")
         retrofitService.getPictures(getDefaultCategoryFromPreferences(), accessToken, 0, 20)
-            .enqueue(object : Callback<DeviantartResponse> {
+            .enqueue(object : Callback<ed.maevski.remote_module.entity.DeviantartResponse> {
 
                 override fun onResponse(
-                    call: Call<DeviantartResponse>,
-                    response: Response<DeviantartResponse>
+                    call: Call<ed.maevski.remote_module.entity.DeviantartResponse>,
+                    response: Response<ed.maevski.remote_module.entity.DeviantartResponse>
                 ) {
                     println("getDeviantArtsFromApi: onResponse")
 
@@ -47,20 +44,20 @@ class Interactor(
                                     listOf(response.results).asFlow()?.flatMapConcat { it.asFlow() }
                                         ?.filter{it.category == "Visual Art"}
                                         ?.map { it ->
-                                                DeviantPicture(
-                                                    id = it.deviationid,
-                                                    title = it.title,
-                                                    author = it.author.username,
-                                                    picture = 0,
-                                                    description = "",
-                                                    url = it.preview.src,
-                                                    urlThumb150 = it.thumbs[0].src,
-                                                    countFavorites = it.stats.favourites,
-                                                    comments = it.stats.comments,
-                                                    countViews = 100000,
-                                                    isInFavorites = false,
-                                                    setting = preferences.getDefaultCategory()
-                                                )
+                                            ed.maevski.remote_module.entity.DeviantPicture(
+                                                id = it.deviationid,
+                                                title = it.title,
+                                                author = it.author.username,
+                                                picture = 0,
+                                                description = "",
+                                                url = it.preview.src,
+                                                urlThumb150 = it.thumbs[0].src,
+                                                countFavorites = it.stats.favourites,
+                                                comments = it.stats.comments,
+                                                countViews = 100000,
+                                                isInFavorites = false,
+                                                setting = preferences.getDefaultCategory()
+                                            )
                                         }?.toList()
                             }
                             println("getDeviantArtsFromApi: onResponse: map: End")
@@ -84,7 +81,7 @@ class Interactor(
                     }
                 }
 
-                override fun onFailure(call: Call<DeviantartResponse>, t: Throwable) {
+                override fun onFailure(call: Call<ed.maevski.remote_module.entity.DeviantartResponse>, t: Throwable) {
                     println("override fun onFailure(call: Call<DeviantartResponse>, t: Throwable)")
                     //В случае провала вызываем другой метод коллбека
                     println("getDeviantArtsFromApi: onFailure")
@@ -97,11 +94,11 @@ class Interactor(
             scope.launch {
                 launch {
                     retrofitService.getToken("client_credentials", API.CLIENT_ID, API.CLIENT_SECRET)
-                        .enqueue(object : Callback<TokenResponse> {
+                        .enqueue(object : Callback<ed.maevski.remote_module.entity_token.TokenResponse> {
 
                             override fun onResponse(
-                                call: Call<TokenResponse>,
-                                response: Response<TokenResponse>
+                                call: Call<ed.maevski.remote_module.entity_token.TokenResponse>,
+                                response: Response<ed.maevski.remote_module.entity_token.TokenResponse>
                             ) {
                                 println("getTokenFromApi: onResponse")
 
@@ -118,7 +115,7 @@ class Interactor(
                                 }
                             }
 
-                            override fun onFailure(call: Call<TokenResponse>, t: Throwable) {
+                            override fun onFailure(call: Call<ed.maevski.remote_module.entity_token.TokenResponse>, t: Throwable) {
                                 continuation.resume(Unit)
 //                    t.printStackTrace()
 //                    errorEvent.postValue("connect ERROR")
@@ -134,11 +131,11 @@ class Interactor(
             scope.launch {
                 launch {
                     retrofitService.checkToken(accessToken)
-                        .enqueue(object : Callback<TokenPlaceboResponse> {
+                        .enqueue(object : Callback<ed.maevski.remote_module.entity_token.TokenPlaceboResponse> {
 
                             override fun onResponse(
-                                call: Call<TokenPlaceboResponse>,
-                                response: Response<TokenPlaceboResponse>
+                                call: Call<ed.maevski.remote_module.entity_token.TokenPlaceboResponse>,
+                                response: Response<ed.maevski.remote_module.entity_token.TokenPlaceboResponse>
                             ) {
                                 println("checkToken: onResponse")
 
@@ -156,7 +153,7 @@ class Interactor(
                                 }
                             }
 
-                            override fun onFailure(call: Call<TokenPlaceboResponse>, t: Throwable) {
+                            override fun onFailure(call: Call<ed.maevski.remote_module.entity_token.TokenPlaceboResponse>, t: Throwable) {
 //                    t.printStackTrace()
                                 println("checkToken: onFailure")
 
@@ -184,9 +181,9 @@ class Interactor(
         preferences.saveToken(accessToken)
     }
 
-    fun getDeviantPicturesFromDB(): Flow<List<DeviantPicture>> = repo.getAllFromDB()
+    fun getDeviantPicturesFromDB(): Flow<List<ed.maevski.remote_module.entity.DeviantPicture>> = repo.getAllFromDB()
 
-    fun getDeviantPicturesFromDBWithCategory(): Flow<List<DeviantPicture>> {
+    fun getDeviantPicturesFromDBWithCategory(): Flow<List<ed.maevski.remote_module.entity.DeviantPicture>> {
         println("getDeviantPicturesFromDBWithCategory -> ${preferences.getDefaultCategory()}")
         return repo.getCategoryFromDB(preferences.getDefaultCategory())
     }

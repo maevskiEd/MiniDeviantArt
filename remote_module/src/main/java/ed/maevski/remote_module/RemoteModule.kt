@@ -1,10 +1,7 @@
-package ed.maevski.minideviantart.di.modules
+package ed.maevski.remote_module
 
 import dagger.Module
 import dagger.Provides
-import ed.maevski.minideviantart.BuildConfig
-import ed.maevski.minideviantart.data.ApiConstants
-import ed.maevski.minideviantart.data.DeviantartApi
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
