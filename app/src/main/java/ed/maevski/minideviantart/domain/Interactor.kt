@@ -2,6 +2,7 @@ package ed.maevski.minideviantart.domain
 
 import ed.maevski.minideviantart.data.*
 import ed.maevski.remote_module.DeviantartApi
+import ed.maevski.remote_module.entity.DeviantPicture
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.*
@@ -23,7 +24,7 @@ class Interactor(
     //и страницу, которую нужно загрузить (это для пагинации)
     fun getDeviantArtsFromApi(page: Int) {
         val accessToken = preferences.getToken()
-        var list: List<ed.maevski.remote_module.entity.DeviantPicture>? = null
+        var list: List<DeviantPicture>? = null
 
         println("getDeviantArtsFromApi")
         retrofitService.getPictures(getDefaultCategoryFromPreferences(), accessToken, 0, 20)
@@ -44,7 +45,7 @@ class Interactor(
                                     listOf(response.results).asFlow()?.flatMapConcat { it.asFlow() }
                                         ?.filter{it.category == "Visual Art"}
                                         ?.map { it ->
-                                            ed.maevski.remote_module.entity.DeviantPicture(
+                                            DeviantPicture(
                                                 id = it.deviationid,
                                                 title = it.title,
                                                 author = it.author.username,
@@ -181,9 +182,9 @@ class Interactor(
         preferences.saveToken(accessToken)
     }
 
-    fun getDeviantPicturesFromDB(): Flow<List<ed.maevski.remote_module.entity.DeviantPicture>> = repo.getAllFromDB()
+    fun getDeviantPicturesFromDB(): Flow<List<DeviantPicture>> = repo.getAllFromDB()
 
-    fun getDeviantPicturesFromDBWithCategory(): Flow<List<ed.maevski.remote_module.entity.DeviantPicture>> {
+    fun getDeviantPicturesFromDBWithCategory(): Flow<List<DeviantPicture>> {
         println("getDeviantPicturesFromDBWithCategory -> ${preferences.getDefaultCategory()}")
         return repo.getCategoryFromDB(preferences.getDefaultCategory())
     }

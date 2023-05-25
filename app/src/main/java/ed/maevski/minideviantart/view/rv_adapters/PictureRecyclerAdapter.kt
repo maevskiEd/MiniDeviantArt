@@ -4,6 +4,7 @@ import com.hannesdorfmann.adapterdelegates4.ListDelegationAdapter
 import ed.maevski.remote_module.Item
 import ed.maevski.minideviantart.view.adapters.AdDelegateAdapter
 import ed.maevski.minideviantart.view.adapters.PictureDelegateAdapter
+import ed.maevski.remote_module.entity.DeviantPicture
 
 class PictureRecyclerAdapter(private val clickListener: OnItemClickListener) : ListDelegationAdapter<List<Item>>() {
 
@@ -19,6 +20,6 @@ class PictureRecyclerAdapter(private val clickListener: OnItemClickListener) : L
 
     //Интерфейс для обработки кликов
     interface OnItemClickListener {
-        fun click(picture: ed.maevski.remote_module.entity.DeviantPicture)
+        fun click(picture: DeviantPicture)
     }
 }

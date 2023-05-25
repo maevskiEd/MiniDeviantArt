@@ -17,6 +17,7 @@ import ed.maevski.minideviantart.view.decoration.TopSpacingItemDecoration
 import ed.maevski.minideviantart.utils.AnimationHelper
 import ed.maevski.minideviantart.view.rv_adapters.ArtRecyclerAdapter
 import ed.maevski.minideviantart.viewmodel.HomeFragmentViewModel
+import ed.maevski.remote_module.entity.DeviantPicture
 import kotlinx.coroutines.*
 import java.util.*
 
@@ -69,7 +70,7 @@ class HomeFragment() : Fragment() {
         })*/
 
         adapter = ArtRecyclerAdapter(object : ArtRecyclerAdapter.OnItemClickListener {
-            override fun click(picture: ed.maevski.remote_module.entity.DeviantPicture) {
+            override fun click(picture: DeviantPicture) {
                 Toast.makeText(requireContext(), picture.title, Toast.LENGTH_SHORT).show()
                 (requireActivity() as MainActivity).launchDetailsFragment(picture)
             }
@@ -108,8 +109,8 @@ class HomeFragment() : Fragment() {
 
             //Этот метод отрабатывает на каждое изменения текста
             override fun onQueryTextChange(newText: String): Boolean {
-                val deviantPictures: List<ed.maevski.remote_module.entity.DeviantPicture> =
-                    picturesDataBase.filter { it is ed.maevski.remote_module.entity.DeviantPicture } as List<ed.maevski.remote_module.entity.DeviantPicture>
+                val deviantPictures: List<DeviantPicture> =
+                    picturesDataBase.filter { it is DeviantPicture } as List<DeviantPicture>
                 //Если ввод пуст то вставляем в адаптер всю БД
                 if (newText.isEmpty()) {
                     adapter.items = picturesDataBase

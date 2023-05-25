@@ -19,13 +19,13 @@ import androidx.fragment.app.viewModels
 import com.bumptech.glide.Glide
 import com.google.android.material.snackbar.Snackbar
 import ed.maevski.minideviantart.R
-import ed.maevski.remote_module.entity.DeviantPicture
 import ed.maevski.minideviantart.databinding.FragmentDetailsBinding
 import ed.maevski.minideviantart.viewmodel.DetailsFragmentViewModel
+import ed.maevski.remote_module.entity.DeviantPicture
 import kotlinx.coroutines.*
 
 class DetailsFragment : Fragment() {
-    lateinit var picture: ed.maevski.remote_module.entity.DeviantPicture
+    lateinit var picture: DeviantPicture
     private val scope = CoroutineScope(Dispatchers.IO)
     private val detailsFragmentViewModel: DetailsFragmentViewModel by viewModels()
 
@@ -43,7 +43,7 @@ class DetailsFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        picture = arguments?.get("dev") as ed.maevski.remote_module.entity.DeviantPicture
+        picture = arguments?.get("dev") as DeviantPicture
 
         //Устанавливаем сердечко
         binding.detailsFabFavorites.setImageResource(

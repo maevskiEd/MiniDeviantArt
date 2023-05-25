@@ -2,14 +2,14 @@ package ed.maevski.minideviantart.viewmodel
 
 import androidx.lifecycle.ViewModel
 import ed.maevski.minideviantart.App
-import ed.maevski.remote_module.entity.DeviantPicture
 import ed.maevski.minideviantart.domain.Interactor
+import ed.maevski.remote_module.entity.DeviantPicture
 import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 
 class HomeFragmentViewModel : ViewModel() {
 
-    lateinit var picturesListData: Flow<List<ed.maevski.remote_module.entity.DeviantPicture>>
+    lateinit var picturesListData: Flow<List<DeviantPicture>>
 
     //Инициализируем интерактор
     @Inject
