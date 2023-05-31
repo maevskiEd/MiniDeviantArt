@@ -5,10 +5,10 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.hannesdorfmann.adapterdelegates4.AbsListItemAdapterDelegate
-import ed.maevski.minideviantart.data.entity.DeviantPicture
-import ed.maevski.minideviantart.domain.Item
+import ed.maevski.remote_module.Item
 import ed.maevski.minideviantart.databinding.ItemPictureBinding
 import ed.maevski.minideviantart.view.rv_adapters.PictureRecyclerAdapter
+import ed.maevski.remote_module.entity.DeviantPicture
 
 class PictureDelegateAdapter(private val clickListener: PictureRecyclerAdapter.OnItemClickListener) :
     AbsListItemAdapterDelegate<DeviantPicture, Item, PictureDelegateAdapter.ViewHolder>() {

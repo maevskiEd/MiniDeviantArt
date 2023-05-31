@@ -8,19 +8,16 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
 import androidx.appcompat.widget.SearchView
-import androidx.core.view.isVisible
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.GridLayoutManager
-import androidx.recyclerview.widget.LinearLayoutManager
 import ed.maevski.minideviantart.view.MainActivity
-import ed.maevski.minideviantart.view.rv_adapters.PictureRecyclerAdapter
-import ed.maevski.minideviantart.data.entity.DeviantPicture
-import ed.maevski.minideviantart.domain.Item
+import ed.maevski.remote_module.Item
 import ed.maevski.minideviantart.databinding.FragmentHomeBinding
 import ed.maevski.minideviantart.view.decoration.TopSpacingItemDecoration
 import ed.maevski.minideviantart.utils.AnimationHelper
 import ed.maevski.minideviantart.view.rv_adapters.ArtRecyclerAdapter
 import ed.maevski.minideviantart.viewmodel.HomeFragmentViewModel
+import ed.maevski.remote_module.entity.DeviantPicture
 import kotlinx.coroutines.*
 import java.util.*
 

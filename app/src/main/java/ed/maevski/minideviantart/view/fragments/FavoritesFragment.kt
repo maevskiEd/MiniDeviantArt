@@ -6,10 +6,9 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.activity.OnBackPressedCallback
-import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import ed.maevski.minideviantart.view.rv_adapters.FavoriteRecyclerAdapter
-import ed.maevski.minideviantart.domain.Item
+import ed.maevski.remote_module.Item
 import ed.maevski.minideviantart.databinding.FragmentFavoritesBinding
 import ed.maevski.minideviantart.view.decoration.TopSpacingItemDecoration
 import ed.maevski.minideviantart.utils.AnimationHelper

@@ -1,7 +1,7 @@
 package ed.maevski.minideviantart.data.dao
 
 import androidx.room.*
-import ed.maevski.minideviantart.data.entity.DeviantPicture
+import ed.maevski.remote_module.entity.DeviantPicture
 import kotlinx.coroutines.flow.Flow
 
 //Помечаем, что это не просто интерфейс, а Dao-объект

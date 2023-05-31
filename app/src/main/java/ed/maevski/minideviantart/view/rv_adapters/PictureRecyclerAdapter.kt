@@ -1,10 +1,10 @@
 package ed.maevski.minideviantart.view.rv_adapters
 
 import com.hannesdorfmann.adapterdelegates4.ListDelegationAdapter
-import ed.maevski.minideviantart.data.entity.DeviantPicture
-import ed.maevski.minideviantart.domain.Item
+import ed.maevski.remote_module.Item
 import ed.maevski.minideviantart.view.adapters.AdDelegateAdapter
 import ed.maevski.minideviantart.view.adapters.PictureDelegateAdapter
+import ed.maevski.remote_module.entity.DeviantPicture
 
 class PictureRecyclerAdapter(private val clickListener: OnItemClickListener) : ListDelegationAdapter<List<Item>>() {
 

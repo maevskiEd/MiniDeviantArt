@@ -4,10 +4,8 @@ import android.app.Application
 import ed.maevski.minideviantart.di.AppComponent
 import ed.maevski.minideviantart.di.DaggerAppComponent
 import ed.maevski.minideviantart.di.modules.DatabaseModule
-import ed.maevski.minideviantart.di.modules.DomainBindsModule
 import ed.maevski.minideviantart.di.modules.DomainModule
-import ed.maevski.minideviantart.di.modules.RemoteModule
-import ed.maevski.minideviantart.domain.Token
+import ed.maevski.remote_module.DaggerRemoteComponent
 
 
 class App : Application() {
@@ -18,9 +16,10 @@ class App : Application() {
         super.onCreate()
         //Инициализируем экземпляр App, через который будем получать доступ к остальным переменным
         instance = this
+        val remoteProvider = DaggerRemoteComponent.create()
         //Создаем компонент
         dagger = DaggerAppComponent.builder()
-            .remoteModule(RemoteModule())
+            .remoteProvider(remoteProvider)
             .databaseModule(DatabaseModule())
             .domainModule(DomainModule(this))
             .build()

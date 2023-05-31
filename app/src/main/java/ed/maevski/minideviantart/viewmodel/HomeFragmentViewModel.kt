@@ -2,8 +2,8 @@ package ed.maevski.minideviantart.viewmodel
 
 import androidx.lifecycle.ViewModel
 import ed.maevski.minideviantart.App
-import ed.maevski.minideviantart.data.entity.DeviantPicture
 import ed.maevski.minideviantart.domain.Interactor
+import ed.maevski.remote_module.entity.DeviantPicture
 import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 

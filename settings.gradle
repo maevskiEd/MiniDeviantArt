@@ -14,4 +14,4 @@ dependencyResolutionManagement {
 }
 rootProject.name = "MiniDeviantArt"
 include ':app'
-include ':remotemodule'
+include ':remote_module'

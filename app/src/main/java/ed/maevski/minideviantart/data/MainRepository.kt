@@ -1,7 +1,7 @@
 package ed.maevski.minideviantart.data
 
 import ed.maevski.minideviantart.data.dao.ArtDao
-import ed.maevski.minideviantart.data.entity.DeviantPicture
+import ed.maevski.remote_module.entity.DeviantPicture
 import kotlinx.coroutines.flow.Flow
 
 class MainRepository(private val artDao: ArtDao) {

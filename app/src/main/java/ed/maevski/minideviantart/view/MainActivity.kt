@@ -7,10 +7,10 @@ import androidx.activity.viewModels
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import ed.maevski.minideviantart.R
-import ed.maevski.minideviantart.data.entity.DeviantPicture
 import ed.maevski.minideviantart.databinding.ActivityMainBinding
 import ed.maevski.minideviantart.view.fragments.*
 import ed.maevski.minideviantart.viewmodel.MainActivityViewModel
+import ed.maevski.remote_module.entity.DeviantPicture
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch

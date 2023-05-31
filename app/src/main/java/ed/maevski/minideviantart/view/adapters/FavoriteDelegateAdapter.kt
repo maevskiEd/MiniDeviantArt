@@ -4,9 +4,9 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.hannesdorfmann.adapterdelegates4.AbsListItemAdapterDelegate
-import ed.maevski.minideviantart.data.entity.DeviantPicture
-import ed.maevski.minideviantart.domain.Item
+import ed.maevski.remote_module.Item
 import ed.maevski.minideviantart.databinding.ItemFavoritePictureBinding
+import ed.maevski.remote_module.entity.DeviantPicture
 
 class FavoriteDelegateAdapter() :
     AbsListItemAdapterDelegate<DeviantPicture, Item, FavoriteDelegateAdapter.ViewHolder>() {

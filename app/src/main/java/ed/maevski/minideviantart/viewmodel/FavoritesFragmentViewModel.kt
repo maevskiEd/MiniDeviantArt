@@ -2,9 +2,7 @@ package ed.maevski.minideviantart.viewmodel
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import ed.maevski.minideviantart.App
-import ed.maevski.minideviantart.domain.Interactor
-import ed.maevski.minideviantart.domain.Item
+import ed.maevski.remote_module.Item
 
 class FavoritesFragmentViewModel: ViewModel() {
     val picturesListLiveData = MutableLiveData<List<Item>>()

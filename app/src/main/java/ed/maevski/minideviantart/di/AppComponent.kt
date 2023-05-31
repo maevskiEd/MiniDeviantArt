@@ -1,21 +1,20 @@
 package ed.maevski.minideviantart.di
 
 import dagger.Component
-import ed.maevski.minideviantart.data.PreferenceProvider
-import ed.maevski.minideviantart.di.modules.RemoteModule
 import ed.maevski.minideviantart.di.modules.DatabaseModule
 import ed.maevski.minideviantart.di.modules.DomainBindsModule
 import ed.maevski.minideviantart.di.modules.DomainModule
 import ed.maevski.minideviantart.viewmodel.HomeFragmentViewModel
 import ed.maevski.minideviantart.viewmodel.MainActivityViewModel
 import ed.maevski.minideviantart.viewmodel.SettingsFragmentViewModel
+import ed.maevski.remote_module.RemoteProvider
 import javax.inject.Singleton
 
 @Singleton
 @Component(
     //Внедряем все модули, нужные для этого компонента
+    dependencies = [RemoteProvider::class],
     modules = [
-        RemoteModule::class,
         DatabaseModule::class,
         DomainModule::class,
         DomainBindsModule::class

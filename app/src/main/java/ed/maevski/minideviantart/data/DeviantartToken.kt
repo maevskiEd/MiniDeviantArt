@@ -1,7 +1,6 @@
 package ed.maevski.minideviantart.data
 
-import ed.maevski.minideviantart.data.entity.DeviantartResponse
-import ed.maevski.minideviantart.data.entity_token.TokenResponse
+import ed.maevski.remote_module.entity_token.TokenResponse
 import retrofit2.Call
 import retrofit2.http.GET
 import retrofit2.http.Query
