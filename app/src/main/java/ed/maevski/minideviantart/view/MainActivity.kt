@@ -1,5 +1,8 @@
 package ed.maevski.minideviantart.view
 
+import android.content.BroadcastReceiver
+import android.content.Intent
+import android.content.IntentFilter
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Toast
@@ -8,6 +11,7 @@ import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import ed.maevski.minideviantart.R
 import ed.maevski.minideviantart.databinding.ActivityMainBinding
+import ed.maevski.minideviantart.receivers.ConnectionChecker
 import ed.maevski.minideviantart.view.fragments.*
 import ed.maevski.minideviantart.viewmodel.MainActivityViewModel
 import ed.maevski.remote_module.entity.DeviantPicture
@@ -21,6 +25,8 @@ class MainActivity : AppCompatActivity() {
 
     private lateinit var scopeMainActivity: CoroutineScope
 
+    private lateinit var receiver: BroadcastReceiver
+
 
     val mainActivityViewModel: MainActivityViewModel by viewModels()
 
@@ -29,6 +35,13 @@ class MainActivity : AppCompatActivity() {
 
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+        receiver = ConnectionChecker()
+        val filters = IntentFilter().apply {
+            addAction(Intent.ACTION_POWER_CONNECTED)
+            addAction(Intent.ACTION_BATTERY_LOW)
+        }
+        registerReceiver(receiver, filters)
 
         scopeMainActivity = CoroutineScope(Dispatchers.IO).also { scope ->
             scope.launch {
@@ -135,5 +148,10 @@ class MainActivity : AppCompatActivity() {
                 else -> false
             }
         }
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        unregisterReceiver(receiver)
     }
 }
