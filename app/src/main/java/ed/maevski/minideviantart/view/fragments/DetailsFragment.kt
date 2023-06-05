@@ -12,6 +12,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.app.ActivityCompat
+import androidx.core.app.NotificationCompat
 import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
@@ -20,6 +21,7 @@ import com.bumptech.glide.Glide
 import com.google.android.material.snackbar.Snackbar
 import ed.maevski.minideviantart.R
 import ed.maevski.minideviantart.databinding.FragmentDetailsBinding
+import ed.maevski.minideviantart.view.notifications.NotificationHelper
 import ed.maevski.minideviantart.viewmodel.DetailsFragmentViewModel
 import ed.maevski.remote_module.entity.DeviantPicture
 import kotlinx.coroutines.*
@@ -90,6 +92,11 @@ class DetailsFragment : Fragment() {
             intent.type = "text/plain"
             //Запускаем наше активити
             startActivity(Intent.createChooser(intent, "Share To:"))
+        }
+
+        binding.detailsFabWatchLater.setOnClickListener {
+            NotificationHelper.createNotification(requireContext(), picture)
+//            NotificationHelper.createForBrowserNotification(requireContext(), picture)
         }
     }
 
