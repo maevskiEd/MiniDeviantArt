@@ -95,7 +95,8 @@ class DetailsFragment : Fragment() {
         }
 
         binding.detailsFabWatchLater.setOnClickListener {
-            NotificationHelper.createNotification(requireContext(), picture)
+//            NotificationHelper.createNotification(requireContext(), picture)
+            NotificationHelper.createNotification2(requireContext(), picture)
 //            NotificationHelper.createForBrowserNotification(requireContext(), picture)
         }
     }
