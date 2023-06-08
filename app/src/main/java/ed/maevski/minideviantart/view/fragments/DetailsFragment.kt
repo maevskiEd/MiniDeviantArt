@@ -11,6 +11,8 @@ import android.provider.MediaStore
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.activity.result.ActivityResultLauncher
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.app.ActivityCompat
 import androidx.core.app.NotificationCompat
 import androidx.core.content.ContextCompat
@@ -27,6 +29,9 @@ import ed.maevski.remote_module.entity.DeviantPicture
 import kotlinx.coroutines.*
 
 class DetailsFragment : Fragment() {
+    private lateinit var singlePermissionPostNotifications: ActivityResultLauncher<String>
+    private lateinit var singlePermissionWriteExternalStorage: ActivityResultLauncher<String>
+
     lateinit var picture: DeviantPicture
     private val scope = CoroutineScope(Dispatchers.IO)
     private val detailsFragmentViewModel: DetailsFragmentViewModel by viewModels()
@@ -95,6 +100,12 @@ class DetailsFragment : Fragment() {
         }
 
         binding.detailsFabWatchLater.setOnClickListener {
+            //Проверяем есть ли разрешение
+            if (!checkPermissionNotification()) {
+                //Если нет, то запрашиваем и выходим из метода
+                requestPermissionNotification()
+                return@setOnClickListener
+            }
 //            NotificationHelper.createNotification(requireContext(), picture)
             NotificationHelper.createNotification2(requireContext(), picture)
 //            NotificationHelper.createForBrowserNotification(requireContext(), picture)
@@ -110,11 +121,27 @@ class DetailsFragment : Fragment() {
         return result == PackageManager.PERMISSION_GRANTED
     }
 
+    private fun checkPermissionNotification(): Boolean {
+        val result = ContextCompat.checkSelfPermission(
+            requireContext(),
+            Manifest.permission.POST_NOTIFICATIONS
+        )
+        return result == PackageManager.PERMISSION_GRANTED
+    }
+
     //Запрашиваем разрешение
     private fun requestPermission() {
         ActivityCompat.requestPermissions(
             requireActivity(),
             arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE),
+            1
+        )
+    }
+
+    private fun requestPermissionNotification() {
+        ActivityCompat.requestPermissions(
+            requireActivity(),
+            arrayOf(Manifest.permission.POST_NOTIFICATIONS),
             1
         )
     }
@@ -211,5 +238,49 @@ class DetailsFragment : Fragment() {
     override fun onDestroyView() {
         _binding = null
         super.onDestroyView()
+    }
+
+    private fun initRegisterForActivityResult() {
+        singlePermissionPostNotifications =
+            registerForActivityResult(ActivityResultContracts.RequestPermission()) { granted ->
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                    when {
+                        granted -> {
+                            // уведомления разрешены
+//                            setNotification()
+                        }
+                        !shouldShowRequestPermissionRationale(Manifest.permission.POST_NOTIFICATIONS) -> {
+                            // уведомления запрещены, пользователь поставил галочку Don't ask again.
+                            // сообщаем пользователю, что он может в дальнейшем разрешить уведомления
+/*                            getString(R.string.details_allow_later_post_notifications).makeToast(
+                                requireContext()
+                            )*/
+                        }
+                        else -> {
+                            // уведомления запрещены, пользователь отклонил запрос
+                        }
+                    }
+                }
+            }
+
+        singlePermissionWriteExternalStorage =
+            registerForActivityResult(ActivityResultContracts.RequestPermission()) { granted ->
+                when {
+                    granted -> {
+                        // доступ к хранилищу разрешен, начинаем загрузку
+                        performAsyncLoadOfPoster()
+                    }
+                    !shouldShowRequestPermissionRationale(Manifest.permission.WRITE_EXTERNAL_STORAGE) -> {
+                        // доступ к хранилищу запрещен, пользователь поставил галочку Don't ask again.
+                        // сообщаем пользователю, что он может в дальнейшем разрешить доступ
+/*                        getString(R.string.details_allow_later_write_external_storage).makeToast(
+                            requireContext()
+                        )*/
+                    }
+                    else -> {
+                        // доступ к хранилищу запрещен, пользователь отклонил запрос
+                    }
+                }
+            }
     }
 }
