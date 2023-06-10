@@ -11,8 +11,8 @@ class ReminderBroadcast : BroadcastReceiver() {
     override fun onReceive(context: Context?, intent: Intent?) {
 
         val bundle = intent?.getBundleExtra(NotificationConstants.ART_BUNDLE_KEY)
-        val film: DeviantPicture = bundle?.get(NotificationConstants.ART_KEY) as DeviantPicture
+        val art: DeviantPicture = bundle?.get(NotificationConstants.ART_KEY) as DeviantPicture
 
-        NotificationHelper.createNotification2(context!!, film)
+        NotificationHelper.createNotification2(context!!, art)
     }
 }
