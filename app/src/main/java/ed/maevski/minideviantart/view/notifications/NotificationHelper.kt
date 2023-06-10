@@ -2,7 +2,10 @@ package ed.maevski.minideviantart.view.notifications
 
 import android.Manifest
 import android.annotation.SuppressLint
+import android.app.AlarmManager
+import android.app.DatePickerDialog
 import android.app.PendingIntent
+import android.app.TimePickerDialog
 import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
@@ -10,6 +13,7 @@ import android.graphics.Bitmap
 import android.graphics.drawable.Drawable
 import android.net.Uri
 import android.os.Build
+import android.os.Bundle
 import androidx.core.app.ActivityCompat
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
@@ -19,8 +23,10 @@ import com.bumptech.glide.request.target.CustomTarget
 import com.bumptech.glide.request.transition.Transition
 import ed.maevski.minideviantart.R
 import ed.maevski.minideviantart.receivers.NotificationClose
+import ed.maevski.minideviantart.receivers.ReminderBroadcast
 import ed.maevski.minideviantart.view.MainActivity
 import ed.maevski.remote_module.entity.DeviantPicture
+import java.util.*
 
 
 object NotificationHelper {
@@ -265,5 +271,73 @@ object NotificationHelper {
             })
         //Отправляем изначальную нотификацию в стандартном исполнении
         notificationManager.notify(id, builder.build())
+    }
+
+    fun notificationSet(context: Context, art: DeviantPicture) {
+        val calendar = Calendar.getInstance()
+        val currentYear = calendar.get(Calendar.YEAR)
+        val currentMonth = calendar.get(Calendar.MONTH)
+        val currentDay = calendar.get(Calendar.DAY_OF_MONTH)
+        val currentHour = calendar.get(Calendar.HOUR_OF_DAY)
+        val currentMinute = calendar.get(Calendar.MINUTE)
+
+        DatePickerDialog(
+            context,
+            { _, dpdYear, dpdMonth, dayOfMonth ->
+                val timeSetListener =
+                    TimePickerDialog.OnTimeSetListener { _, hourOfDay, pickerMinute ->
+                        val pickedDateTime = Calendar.getInstance()
+                        pickedDateTime.set(
+                            dpdYear,
+                            dpdMonth,
+                            dayOfMonth,
+                            hourOfDay,
+                            pickerMinute,
+                            0
+                        )
+                        val dateTimeInMillis = pickedDateTime.timeInMillis
+                        //После того, как получим время, вызываем метод, который создаст Alarm
+                        createWatchLaterEvent(context, dateTimeInMillis, art)
+                    }
+
+                TimePickerDialog(
+                    context,
+                    timeSetListener,
+                    currentHour,
+                    currentMinute,
+                    true
+                ).show()
+
+            },
+            currentYear,
+            currentMonth,
+            currentDay
+        ).show()
+    }
+
+    @SuppressLint("UnspecifiedImmutableFlag")
+    private fun createWatchLaterEvent(context: Context, dateTimeInMillis: Long, art: DeviantPicture) {
+        //Получаем доступ к AlarmManager
+        val alarmManager =
+            context.getSystemService(Context.ALARM_SERVICE) as AlarmManager
+        //Создаем интент для запуска ресивера
+        val intent = Intent(art.title, null, context, ReminderBroadcast()::class.java)
+        //Кладем в него фильм
+        val bundle = Bundle()
+        bundle.putParcelable(NotificationConstants.ART_KEY, art)
+        intent.putExtra(NotificationConstants.ART_BUNDLE_KEY, bundle)
+        //Создаем пендинг интент для запуска извне приложения
+        val pendingIntent = PendingIntent.getBroadcast(
+            context,
+            0,
+            intent,
+            PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
+        )
+        //Устанавливаем Alarm
+        alarmManager.setExact(
+            AlarmManager.RTC_WAKEUP,
+            dateTimeInMillis,
+            pendingIntent
+        )
     }
 }

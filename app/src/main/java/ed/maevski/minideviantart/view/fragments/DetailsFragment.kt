@@ -106,9 +106,11 @@ class DetailsFragment : Fragment() {
                 requestPermissionNotification()
                 return@setOnClickListener
             }
-//            NotificationHelper.createNotification(requireContext(), picture)
+/*//            NotificationHelper.createNotification(requireContext(), picture)
             NotificationHelper.createNotification2(requireContext(), picture)
-//            NotificationHelper.createForBrowserNotification(requireContext(), picture)
+//            NotificationHelper.createForBrowserNotification(requireContext(), picture)*/
+
+            NotificationHelper.notificationSet(requireContext(), picture)
         }
     }
 
