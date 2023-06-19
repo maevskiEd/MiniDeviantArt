@@ -25,6 +25,8 @@ import ed.maevski.minideviantart.R
 import ed.maevski.minideviantart.receivers.NotificationClose
 import ed.maevski.minideviantart.receivers.ReminderBroadcast
 import ed.maevski.minideviantart.view.MainActivity
+import ed.maevski.minideviantart.view.notifications.NotificationConstants.ACTION_APP
+import ed.maevski.minideviantart.view.notifications.NotificationConstants.ACTION_BROWSER
 import ed.maevski.remote_module.entity.DeviantPicture
 import java.util.*
 
@@ -122,7 +124,7 @@ object NotificationHelper {
                 context,
                 0,
                 Intent(context, NotificationClose::class.java).apply {
-                    action = "actionApp"
+                    action = ACTION_APP
                     putExtra("notificationId", notificationId)
                 },
                 PendingIntent.FLAG_IMMUTABLE
@@ -132,7 +134,7 @@ object NotificationHelper {
                 context,
                 0,
                 Intent(context, NotificationClose::class.java).apply {
-                    action = "actionBrowser"
+                    action = ACTION_BROWSER
                     putExtra("notificationId", notificationId)
                     putExtra("notificationBrowserUrl", deviantArt.url)
                 },
