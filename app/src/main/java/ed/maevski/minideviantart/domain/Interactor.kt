@@ -1,6 +1,7 @@
 package ed.maevski.minideviantart.domain
 
 import ed.maevski.minideviantart.data.*
+import ed.maevski.minideviantart.view.notifications.entity.Notification
 import ed.maevski.remote_module.DeviantartApi
 import ed.maevski.remote_module.entity.DeviantPicture
 import kotlinx.coroutines.CoroutineScope
@@ -10,6 +11,9 @@ import kotlinx.coroutines.launch
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+import java.text.SimpleDateFormat
+import java.util.Date
+import java.util.Locale
 import kotlin.coroutines.resume
 import kotlin.coroutines.suspendCoroutine
 
@@ -187,5 +191,46 @@ class Interactor(
     fun getDeviantPicturesFromDBWithCategory(): Flow<List<DeviantPicture>> {
         println("getDeviantPicturesFromDBWithCategory -> ${preferences.getDefaultCategory()}")
         return repo.getCategoryFromDB(preferences.getDefaultCategory())
+    }
+
+    fun putNotificationToDb(notification: Notification){
+        scope.launch {
+            repo.putNotificationToDb(notification)
+        }
+    }
+
+    fun updateNotification(notification: Notification, oldDateTimeInMillis: Long){
+        val newDateMilis = notification.dateTimeInMillis
+        val format = SimpleDateFormat("dd.MM.yyyy HH:mm:ss", Locale("ru", "RU"))
+        println("Interactor: Время в милисекундках эпохи: oldDateTimeInMillis: ${oldDateTimeInMillis} ")
+        println("Interactor: Дата в удобном виде: oldDateTimeInMillis:${format.format(
+            Date(oldDateTimeInMillis)
+        )}")
+        println("Interactor: Время в милисекундках эпохи: ${notification.dateTimeInMillis} ")
+        println("Interactor: Дата в удобном виде:${format.format(Date(notification.dateTimeInMillis))}")
+
+        scope.launch {
+            println("Scope: Interactor: Время в милисекундках эпохи: oldDateTimeInMillis: ${oldDateTimeInMillis} ")
+            println("Scope: Interactor: Дата в удобном виде: oldDateTimeInMillis:${format.format(
+                Date(oldDateTimeInMillis)
+            )}")
+
+            notification.dateTimeInMillis = newDateMilis
+
+            println("Scope:Interactor: Время в милисекундках эпохи: ${notification.dateTimeInMillis} ")
+            println("Scope:Interactor: Дата в удобном виде:${format.format(Date(notification.dateTimeInMillis))}")
+
+            repo.updateNotification(notification, oldDateTimeInMillis)
+        }
+    }
+
+    fun getNotification(): Flow<List<Notification>> {
+        return repo.getNotifications()
+    }
+
+    fun deleteNotificationFromDb(notification: Notification) {
+        scope.launch {
+            repo.deleteNotificationFromDb(notification)
+        }
     }
 }

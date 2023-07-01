@@ -23,16 +23,22 @@ import com.bumptech.glide.Glide
 import com.google.android.material.snackbar.Snackbar
 import ed.maevski.minideviantart.R
 import ed.maevski.minideviantart.databinding.FragmentDetailsBinding
+import ed.maevski.minideviantart.utils.DateTimePicker
+import ed.maevski.minideviantart.view.notifications.NotificationConstants
 import ed.maevski.minideviantart.view.notifications.NotificationHelper
 import ed.maevski.minideviantart.viewmodel.DetailsFragmentViewModel
 import ed.maevski.remote_module.entity.DeviantPicture
 import kotlinx.coroutines.*
+import java.text.SimpleDateFormat
+import java.util.Date
+import java.util.Locale
 
 class DetailsFragment : Fragment() {
     private lateinit var singlePermissionPostNotifications: ActivityResultLauncher<String>
     private lateinit var singlePermissionWriteExternalStorage: ActivityResultLauncher<String>
 
     lateinit var picture: DeviantPicture
+
     private val scope = CoroutineScope(Dispatchers.IO)
     private val detailsFragmentViewModel: DetailsFragmentViewModel by viewModels()
 
@@ -49,6 +55,11 @@ class DetailsFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        //Закидываем interactor в NotificationHelper, чтобы можно было работать с базами данных.
+        //Почему так? Потому что еще не сильно разаобрался с Dagger 2 и
+        //NotificationHelper - object, а в object иньекцию сделать нельзя.
+        NotificationHelper.initialize(detailsFragmentViewModel.interactor)
 
         picture = arguments?.get("dev") as DeviantPicture
 
@@ -106,9 +117,29 @@ class DetailsFragment : Fragment() {
                 requestPermissionNotification()
                 return@setOnClickListener
             }
-//            NotificationHelper.createNotification(requireContext(), picture)
-            NotificationHelper.createNotification2(requireContext(), picture)
-//            NotificationHelper.createForBrowserNotification(requireContext(), picture)
+            /*//            NotificationHelper.createNotification(requireContext(), picture)
+                        NotificationHelper.createNotification2(requireContext(), picture)
+            //            NotificationHelper.createForBrowserNotification(requireContext(), picture)*/
+
+//            NotificationHelper.initialize(detailsFragmentViewModel.interactor)
+//            NotificationHelper.notificationSet(requireContext(), picture)
+
+            DateTimePicker(requireContext()) { dateTimeInMillis ->
+                // Делайте необходимые действия с dateTimeInMillis (время в миллисекундах эпохи)
+                println("Время в милисекундках эпохи: $dateTimeInMillis ")
+                val format = SimpleDateFormat("dd.MM.yyyy HH:mm:ss", Locale("ru", "RU"))
+                println("Дата в удобном виде: ${format.format(Date(dateTimeInMillis))}")
+
+                NotificationHelper.notificationDb(
+                    NotificationConstants.ACTIONDB_CREATE,
+                    requireContext(),
+                    NotificationHelper.notificationSet(picture, dateTimeInMillis)
+                )
+/*                    .createWatchLaterEvent(
+                        requireContext(),
+                        NotificationHelper.notificationSet(picture, dateTimeInMillis)
+                    )*/
+            }
         }
     }
 
@@ -157,15 +188,16 @@ class DetailsFragment : Fragment() {
             val contentValues = ContentValues().apply {
                 //Составляем информацию для файла (имя, тип, дата создания, куда сохранять и т.д.)
                 put(MediaStore.Images.Media.TITLE, image_title)
-                put(MediaStore.Images.Media.DISPLAY_NAME,image_title)
+                put(MediaStore.Images.Media.DISPLAY_NAME, image_title)
                 put(MediaStore.Images.Media.MIME_TYPE, "image/jpeg")
-                put(MediaStore.Images.Media.DATE_ADDED,System.currentTimeMillis() / 1000)
+                put(MediaStore.Images.Media.DATE_ADDED, System.currentTimeMillis() / 1000)
                 put(MediaStore.Images.Media.DATE_TAKEN, System.currentTimeMillis())
                 put(MediaStore.Images.Media.RELATIVE_PATH, "Pictures/FilmsSearchApp")
             }
             //Получаем ссылку на объект Content resolver, который помогает передавать информацию из приложения вовне
             val contentResolver = requireActivity().contentResolver
-            val uri = contentResolver.insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI,contentValues)
+            val uri =
+                contentResolver.insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, contentValues)
             //Открываем канал для записи на диск
             val outputStream = contentResolver.openOutputStream(uri!!)
             //Передаем нашу картинку, может сделать компрессию
@@ -249,13 +281,15 @@ class DetailsFragment : Fragment() {
                             // уведомления разрешены
 //                            setNotification()
                         }
+
                         !shouldShowRequestPermissionRationale(Manifest.permission.POST_NOTIFICATIONS) -> {
                             // уведомления запрещены, пользователь поставил галочку Don't ask again.
                             // сообщаем пользователю, что он может в дальнейшем разрешить уведомления
-/*                            getString(R.string.details_allow_later_post_notifications).makeToast(
-                                requireContext()
-                            )*/
+                            /*                            getString(R.string.details_allow_later_post_notifications).makeToast(
+                                                            requireContext()
+                                                        )*/
                         }
+
                         else -> {
                             // уведомления запрещены, пользователь отклонил запрос
                         }
@@ -270,13 +304,15 @@ class DetailsFragment : Fragment() {
                         // доступ к хранилищу разрешен, начинаем загрузку
                         performAsyncLoadOfPoster()
                     }
+
                     !shouldShowRequestPermissionRationale(Manifest.permission.WRITE_EXTERNAL_STORAGE) -> {
                         // доступ к хранилищу запрещен, пользователь поставил галочку Don't ask again.
                         // сообщаем пользователю, что он может в дальнейшем разрешить доступ
-/*                        getString(R.string.details_allow_later_write_external_storage).makeToast(
-                            requireContext()
-                        )*/
+                        /*                        getString(R.string.details_allow_later_write_external_storage).makeToast(
+                                                    requireContext()
+                                                )*/
                     }
+
                     else -> {
                         // доступ к хранилищу запрещен, пользователь отклонил запрос
                     }
