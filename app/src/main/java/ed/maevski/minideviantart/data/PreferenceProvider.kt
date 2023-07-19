@@ -39,11 +39,20 @@ class PreferenceProvider(context: Context) {
         return preference.getString(KEY_ACCESS_TOKEN, "") ?: ""
     }
 
+    fun saveTrialPeriodStart(timeTrialPeriodStart: Long) {
+        preference.edit { putLong(KEY_TRIAL_PERIOD_START, timeTrialPeriodStart).apply() }
+    }
+
+    fun getTrialPeriodStart(): Long {
+        return preference.getLong(KEY_TRIAL_PERIOD_START, 0L)
+    }
+
     //Ключи для наших настроек, по ним мы их будем получать
     companion object {
         private const val KEY_FIRST_LAUNCH = "first_launch"
         private const val KEY_DEFAULT_CATEGORY = "default_category"
         private const val KEY_ACCESS_TOKEN = "access_token"
+        private const val KEY_TRIAL_PERIOD_START = "trialPeriodStart"
         private const val DEFAULT_CATEGORY = "newest"
     }
 }

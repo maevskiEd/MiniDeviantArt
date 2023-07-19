@@ -1,5 +1,6 @@
 package ed.maevski.minideviantart.view
 
+import android.app.AlertDialog
 import android.content.BroadcastReceiver
 import android.content.Intent
 import android.content.IntentFilter
@@ -62,21 +63,21 @@ class MainActivity : AppCompatActivity() {
                     }
                 }
             }
-/*            scope.launch {
-                for (element in mainActivityViewModel.errorEvent) {
-                    println("MainActivity ->scopeMainActivity: errorEvent: $element")
-                    withContext(Dispatchers.Main) {
-                        if (!element) {
-                            Toast.makeText(applicationContext, "Error", Toast.LENGTH_SHORT).show()
-                        }
-                    }
-                }
-            }*/
+            /*            scope.launch {
+                            for (element in mainActivityViewModel.errorEvent) {
+                                println("MainActivity ->scopeMainActivity: errorEvent: $element")
+                                withContext(Dispatchers.Main) {
+                                    if (!element) {
+                                        Toast.makeText(applicationContext, "Error", Toast.LENGTH_SHORT).show()
+                                    }
+                                }
+                            }
+                        }*/
         }
 
-/*        mainActivityViewModel.errorEvent.observe(this) {
-            Toast.makeText(this, it, Toast.LENGTH_SHORT).show()
-        }*/
+        /*        mainActivityViewModel.errorEvent.observe(this) {
+                    Toast.makeText(this, it, Toast.LENGTH_SHORT).show()
+                }*/
     }
 
     //Ищем фрагмент по тегу, если он есть то возвращаем его, если нет, то null
@@ -116,31 +117,43 @@ class MainActivity : AppCompatActivity() {
                 R.id.home -> {
                     val tag = "home"
                     val fragment = checkFragmentExistence(tag)
-                    //В первом параметре, если фрагмент не найден и метод вернул null, то с помощью
-                    //элвиса мы вызываем создание нового фрагмента
+
                     changeFragment(fragment ?: HomeFragment(), tag)
                     true
                 }
+
                 R.id.favorites -> {
-                    Toast.makeText(this, "Доступно в Pro версии", Toast.LENGTH_SHORT).show()
+                    if (trialPeriodCheck()) {
+                        val tag = "favorites"
+                        val fragment = checkFragmentExistence(tag)
+                        changeFragment(fragment ?: FavoritesFragment(), tag)
+                    }
                     true
                 }
+
                 R.id.watch_later -> {
                     val tag = "watch_later"
                     val fragment = checkFragmentExistence(tag)
                     changeFragment(fragment ?: WatchLaterFragment(), tag)
                     true
                 }
+
                 R.id.selections -> {
-                    Toast.makeText(this, "Доступно в Pro версии", Toast.LENGTH_SHORT).show()
+                    if (trialPeriodCheck()) {
+                        val tag = "selections"
+                        val fragment = checkFragmentExistence(tag)
+                        changeFragment(fragment ?: SelectionsFragment(), tag)
+                    }
                     true
                 }
+
                 R.id.settings -> {
                     val tag = "settings"
                     val fragment = checkFragmentExistence(tag)
                     changeFragment(fragment ?: SettingsFragment(), tag)
                     true
                 }
+
                 else -> false
             }
         }
@@ -149,5 +162,39 @@ class MainActivity : AppCompatActivity() {
     override fun onDestroy() {
         super.onDestroy()
         unregisterReceiver(receiver)
+    }
+
+    private fun trialPeriodCheck(): Boolean {
+        val timeTrialPeriodInMillis =
+            mainActivityViewModel.interactor.getTrialPeriodStartFromPreferences()
+        if (timeTrialPeriodInMillis == 0L) {
+            AlertDialog.Builder(this)
+                .setTitle("Получить пробный период?")
+                .setIcon(R.drawable.baseline_more_time_24)
+                .setPositiveButton("Да") { _, _ ->
+                    mainActivityViewModel.interactor.saveTrialPeriodStartToPreferences(
+                        System.currentTimeMillis()
+                    )
+                    Toast.makeText(
+                        this,
+                        "Вам предоставлено 5 минут пробного периода",
+                        Toast.LENGTH_SHORT
+                    )
+                        .show()
+                }
+                .setNegativeButton("Нет") { _, _ ->
+
+                }
+                .show()
+            return false
+        } else if (timeTrialPeriodInMillis + MINUTES_5_IN_MILLIS <= System.currentTimeMillis()) {
+            Toast.makeText(this, "Доступно в Pro версии", Toast.LENGTH_SHORT).show()
+            return false
+        }
+        return true
+    }
+
+    companion object {
+        private const val MINUTES_5_IN_MILLIS = 5 * 60 * 1000
     }
 }

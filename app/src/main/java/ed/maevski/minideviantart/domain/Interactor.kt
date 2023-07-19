@@ -186,6 +186,12 @@ class Interactor(
         preferences.saveToken(accessToken)
     }
 
+    fun getTrialPeriodStartFromPreferences() = preferences.getTrialPeriodStart()
+
+    fun saveTrialPeriodStartToPreferences(timeStart: Long) {
+        preferences.saveTrialPeriodStart(timeStart)
+    }
+
     fun getDeviantPicturesFromDB(): Flow<List<DeviantPicture>> = repo.getAllFromDB()
 
     fun getDeviantPicturesFromDBWithCategory(): Flow<List<DeviantPicture>> {
