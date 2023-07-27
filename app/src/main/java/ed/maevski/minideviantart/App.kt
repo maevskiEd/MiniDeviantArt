@@ -14,6 +14,7 @@ import ed.maevski.remote_module.DaggerRemoteComponent
 
 class App : Application() {
     lateinit var dagger: AppComponent
+    var isPromoShown = false
 //    lateinit var token: Token
 
     override fun onCreate() {
