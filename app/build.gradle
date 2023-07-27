@@ -7,12 +7,12 @@ plugins {
 
 android {
     namespace 'ed.maevski.minideviantart'
-    compileSdk 33
+    compileSdk 34
 
     defaultConfig {
         applicationId "ed.maevski.minideviantart"
         minSdk 24
-        targetSdk 33
+        targetSdk 34
         versionCode 1
         versionName "1.0"
 
@@ -35,6 +35,33 @@ android {
 
     buildFeatures {
         viewBinding = true
+    }
+
+    flavorDimensions "version"
+
+    productFlavors {
+        basic {
+            dimension "version"
+            applicationIdSuffix ".basic"
+            versionNameSuffix "-basic"
+        }
+        pro {
+            dimension "version"
+            applicationIdSuffix ".pro"
+            versionNameSuffix "-pro"
+        }
+    }
+    sourceSets {
+        basic {
+            java {
+                srcDirs 'src\\basic\\java'
+            }
+        }
+        pro {
+            java {
+                srcDirs 'src\\pro\\java'
+            }
+        }
     }
 }
 
